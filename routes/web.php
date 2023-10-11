@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -39,6 +40,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
     Route::get('/products', [ProductController::class, 'index'])->name('products');
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients');
 });
 
 require __DIR__.'/auth.php';
