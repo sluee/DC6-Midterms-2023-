@@ -4,6 +4,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,9 +40,39 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
-    Route::get('/products', [ProductController::class, 'index'])->name('products');
-    Route::get('/clients', [ClientController::class, 'index'])->name('clients');
+    Route::middleware('can:manage-categories')->group(function(){
+        Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+
+    });
+
+    Route::middleware('can:make-sales')->group(function(){
+        Route::get('/products', [ProductController::class, 'index'])->name('products');
+        Route::get('/products/create', [ProductController::class, 'create'])->middleware('can:create-product');
+        Route::get('/products/edit/{client}', [ProductController::class, 'edit'])->middleware('can:edit-product');
+        // Route::put('/products/create', [ClientController::class, 'create']);
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->middleware('can:delete-product');
+
+        Route::get('/sales', [SalesController::class, 'index'])->name('sales');
+        Route::get('/sales/create', [SalesController::class, 'create'])->name('sales.create');
+    });
+
+
+   Route::middleware('can:manage')->group(function(){
+        Route::get('/clients', [ClientController::class, 'index'])->name('clients');
+        Route::get('/clients/create', [ClientController::class, 'create']);
+        Route::get('/clients/edit/{client}', [ClientController::class, 'edit']);
+        Route::get('/clients/{client}', [ClientController::class, 'show']);
+        Route::delete('/clients/{client}', [ClientController::class, 'destroy']);
+
+   });
+
+    Route::middleware('can:manage-users')->group(function(){
+        Route::get('/users', [UserController::class , 'index'])->name('users');
+        Route::get('/users/create', [UserController::class , 'create']);
+        Route::get('/users/edit/{user}', [UserController::class, 'edit']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
+    });
+
 });
 
 require __DIR__.'/auth.php';

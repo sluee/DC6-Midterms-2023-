@@ -1,41 +1,36 @@
 <template>
-    <!-- <div class="mx-auto mt-5 w-80 transform overflow-hidden rounded-lg bg-white dark:bg-slate-800 shadow-md  hover:shadow-lg ">
-        <div class="cursor-pointer " @click="open(supplier)">
-            <div class="p-4">
-            <h2 class="mb-2 text-lg font-medium dark:text-white text-gray-900">{{ supplier.name }}</h2>
-            <p class="mb-2 text-base dark:text-gray-300 text-gray-700">{{ supplier.email }}</p>
-            <div class="flex items-center">
-                <p class="mr-2 text-lg font-semibold text-gray-900 dark:text-white">{{ supplier.phone }}</p>
+
+    <div class='flex items-center justify-center py-5 px-2' :class="themeMode">
+        <div class='w-full max-w-md  mx-auto  rounded-3xl shadow-xl overflow-hidden'>
+            <div class='max-w-md mx-auto'>
+            <!-- <div class='h-[236px]' style='background-image:url(https://img.freepik.com/free-photo/pasta-spaghetti-with-shrimps-sauce_1220-5072.jpg?w=2000&t=st=1678041911~exp=1678042511~hmac=e4aa55e70f8c231d4d23832a611004f86eeb3b6ca067b3fa0c374ac78fe7aba6);background-size:cover;background-position:center'>
+            </div> -->
+            <div class='p-4 sm:p-6'>
+                <p class='font-bold text-[20px] leading-7 mb-1'>{{ client.last_name }} , {{ client.first_name }}</p>
+                <div class='flex flex-row'>
+                    <p class='text-[15px] font-bold text-[#0FB478]'>{{ client.address }}</p>
+
+                </div>
+                <p class=' font-[15px] mt-4'>Phone number{{client.phone }}</p>
+                <p class='font-[15px] '>Credit limit: {{ client.credit_limit }}</p>
+
+
+                <button @click="open(client)" class='block mt-10 w-full px-4 py-3 font-medium tracking-wide text-center capitalize transition-colors duration-300 transform bg-[#FFC933] rounded-[14px] hover:bg-[#FFC933DD] focus:outline-none focus:ring focus:ring-teal-300 focus:ring-opacity-80'>
+                    View on Client
+                </button>
 
             </div>
             </div>
-
         </div>
+    </div>
 
-    </div> -->
-    <body class="bg-gray-100">
-        <div class="max-w-lg mx-auto my-5 bg-white rounded-lg shadow-md p-5 mr-5">
-          <!-- <img class="w-32 h-32 rounded-full mx-auto" :src="supplier.picUrl" alt="Profile picture"> -->
-          <h2 class="text-center text-2xl font-semibold mt-3">{{ client.last_name }} , {{ client.first_name }}</h2>
-          <p class="text-center text-gray-600 mt-1">{{ client.address }}</p>
-          <div class="flex justify-center mt-5">
-            <a href="#" class="text-blue-500 hover:text-blue-700 mx-3">{{client.phone }}</a>
-            <a href="#" class="text-blue-500 hover:text-blue-700 mx-3">{{client.credit_limit }}</a>
-            <!-- <a href="#" class="text-blue-500 hover:text-blue-700 mx-3">LinkedIn</a>
-            <a href="#" class="text-blue-500 hover:text-blue-700 mx-3">GitHub</a> -->
-          </div>
-          <!-- <div class="mt-5">
-            <h3 class="text-xl font-semibold">Bio</h3>
-            <p class="text-gray-600 mt-2">John is a software engineer with over 10 years of experience in developing web and mobile applications. He is skilled in JavaScript, React, and Node.js.</p>
-          </div> -->
-        </div>
-      </body>
+
 
 </template>
 
 <script setup>
 import { router } from '@inertiajs/vue3';
-
+import { inject } from 'vue';
 
 const props = defineProps({
     client: Object
@@ -44,6 +39,8 @@ const props = defineProps({
 function open(client) {
     router.visit('/clients/' + client.id)
 }
+
+const themeMode = inject('themeMode')
 
 
 

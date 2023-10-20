@@ -1,48 +1,53 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import theme from 'tailwindcss/defaultTheme';
-import {inject} from 'vue'
+    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+    import {Head, Link} from '@inertiajs/vue3'
+    import moment from 'moment'
+import { inject } from 'vue';
 
-const props = defineProps({
-    categories:Object
-})
+    const props = defineProps({
+        sales:Array,
+    })
 
-const themeMode = inject('themeMode');
+    function formattedDate(date){
+        return moment(date).format('MMMM D, YYYY');
+    }
 
+    const themeMode = inject('themeMode');
 </script>
 
 <template>
-     <Head title="Categories" />
+    <div>
+        <Head title="Sales"/>
+    </div>
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl leading-tight">Categories</h2>
+            <div class="flex justify-between mt-2">
+                <h2 class="font-semibold text-xl  leading-tight">Sales</h2>
+                <Link href="sales/create"  class="btn-primary inline-flex items-center mr-20 px-3 py-2 bg-blue-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 focus:bg-blue-600 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    Create Sales</Link>
+            </div>
         </template>
-
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" :class="themeMode">
-                <div class=" overflow-hidden shadow-sm sm:rounded-lg">
-                    <!-- component -->
-                    <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
+                <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
                     <table class="w-full border-collapse  text-left text-sm ">
                         <thead class="">
                         <tr>
-                            <th scope="col" class="px-6 py-4 font-medium ">Name</th>
-                            <th scope="col" class="px-6 py-4 font-medium ">Description</th>
+                            <th scope="col" class="px-6 py-4 font-medium ">Date</th>
+                            <th scope="col" class="px-6 py-4 font-medium ">Client</th>
+                            <th scope="col" class="px-6 py-4 font-medium ">Payment</th>
+                            <th scope="col" class="px-6 py-4 font-medium ">Action</th>
+
                             <th scope="col" class="px-6 py-4 font-medium "></th>
                         </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100 border-t border-gray-100" v-for="cat in categories" :key="cat.id">
+                        <tbody class="divide-y divide-gray-100 border-t border-gray-100" v-for="sale in sales" :key="sale.id">
                         <tr class="hover:bg-gray-50">
-                            <th class="flex gap-3 px-6 py-4 font-normal ">
 
-                            <div class="text-sm">
-                                <div class="font-medium ">{{ cat.name }}</div>
-
-                            </div>
-                            </th>
-                            <td class="px-6 py-4">{{ cat.description }}</td>
+                            <td class="px-6 py-4">{{ formattedDate(sale.date) }}</td>
+                            <td class="px-6 py-4">{{ sale.client.first_name }} {{ sale.client.last_name }}</td>
+                            <td class="px-6 py-4">{{ sale.is_credit ? 'Credit' :'Cash'}}</td>
 
                             <td class="px-6 py-4">
                             <div class="flex justify-end gap-4">
@@ -86,9 +91,12 @@ const themeMode = inject('themeMode');
 
                         </tbody>
                     </table>
-                    </div>
                 </div>
             </div>
+
         </div>
     </AuthenticatedLayout>
+
+
+
 </template>
